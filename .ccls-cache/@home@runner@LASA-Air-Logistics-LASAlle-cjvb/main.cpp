@@ -43,9 +43,9 @@ double disKAUS(double lat2d, double lon2d) {
   lat2r = deg2rad(lat2d);
   lon2r = deg2rad(lon2d);
   u = (lat2r - lat1r);
-  v =(lon2r - lon1r);
-  double a = pow(sin(u / 2), 2)+pow(sin(v / 2), 2) * cos(lat1r)*cos(lat2r);
-  double c = 2*asin(sqrt(a));
+  v = (lon2r - lon1r);
+  double a = pow(sin(u / 2), 2) + pow(sin(v / 2), 2) * cos(lat1r) * cos(lat2r);
+  double c = 2 * asin(sqrt(a));
   return earthRadiusKm * c;
 }
 
@@ -61,9 +61,9 @@ public:
   Airport data;
   Node *next;
 
-  Node(Airport d){
-    this->data=d;
-    this->next=NULL;
+  Node(Airport d) {
+    this->data = d;
+    this->next = NULL;
   }
 };
 
@@ -71,9 +71,7 @@ class linkedlist {
 public:
   Node *head;
 
-  linkedlist() {
-    this->head=NULL;
-  }
+  linkedlist() { this->head = NULL; }
 
   void append(Airport *ap) {
     Node *n = new Node(*ap);
@@ -82,29 +80,28 @@ public:
       return;
     } else {
       Node *temp = head;
-      while (temp->next!=NULL) {
+      while (temp->next != NULL) {
         temp = temp->next;
       }
       temp->next = n;
     }
-  
   }
-
 };
 
-void simpleSortTotal(linkedlist *l){
-  if (l->head == nullptr) return;
+void simpleSortTotal(linkedlist *l) {
+  if (l->head == nullptr)
+    return;
   Node *c = l->head;
-  while (c->next!=NULL) {
+  while (c->next != NULL) {
     Node *j = c->next;
-    while(j!=NULL){
-    if (disKAUS(c->data.latitude, c->data.longitude) >
-        disKAUS(j->data.latitude, j->data.longitude)) {
-      swap(c->data, j->data);
+    while (j != NULL) {
+      if (disKAUS(c->data.latitude, c->data.longitude) >
+          disKAUS(j->data.latitude, j->data.longitude)) {
+        swap(c->data, j->data);
+      }
+      j = j->next;
     }
-    j = j->next;
-  }
-  c = c->next;
+    c = c->next;
   }
 }
 /**
@@ -144,8 +141,8 @@ int main() {
     airportArr[c]->latitude = atof(cNum);
     infile.getline(temp, 256, '\n');
 
-   // cout << airportArr[c]->code << " long: " << airportArr[c]->longitude
-   //<< " lat: " << airportArr[c]->latitude << endl;
+    // cout << airportArr[c]->code << " long: " << airportArr[c]->longitude
+    //<< " lat: " << airportArr[c]->latitude << endl;
 
     /*
     if (!(c % 1000))
@@ -161,7 +158,6 @@ int main() {
   }
   infile.close();
 
-  
   /*for (int b = 0; b < air; b++) {
     cout << airportArr[b]->code << " long: " << airportArr[b]->longitude
          << " lat: " << airportArr[b]->latitude << endl;
@@ -171,25 +167,23 @@ int main() {
 
   linkedlist *Alle = new linkedlist();
 
-  for(int i = 0;i<air;i++){
+  for (int i = 0; i < air; i++) {
     Alle->append(airportArr[i]);
   }
-  
 
   simpleSortTotal(Alle);
   Node *temp = Alle->head;
-  for(int i = 0;i<air;i++){
-    
-    cout << temp->data.code << " dist to KAUS: "<< disKAUS(temp->data.latitude, temp->data.longitude) << endl;
+  for (int i = 0; i < air; i++) {
+
+    cout << temp->data.code << " dist to KAUS: "
+         << disKAUS(temp->data.latitude, temp->data.longitude) << endl;
     temp = temp->next;
   }
-  
 
   // while (current != NULL){
   //  cout << current->data.code << " long: " << current->data.longitude << "
   //  lat: " << current->data.latitude << endl; current = current->next;
   // }
- 
 }
 
 /*
